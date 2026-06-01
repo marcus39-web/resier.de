@@ -86,6 +86,13 @@ h3,
     animation: fade-up 420ms ease;
 }
 
+.intro-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    align-items: center;
+}
+
 .intro h1 {
     font-size: clamp(1.8rem, 5vw, 3rem);
     margin: 0.4rem 0 1rem;
@@ -94,6 +101,31 @@ h3,
 .lead {
     color: var(--muted);
     max-width: 72ch;
+}
+
+.profile-photo-wrap {
+    margin: 0;
+    min-height: 260px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(160deg, #10263b 0%, #0f1e2f 100%);
+}
+
+.profile-photo {
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #315573;
+    box-shadow: 0 14px 34px rgb(4 9 16 / 35%);
+}
+
+.profile-photo-placeholder {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    text-align: center;
 }
 
 .eyebrow {
@@ -331,6 +363,10 @@ textarea:focus {
 }
 
 @media (min-width: 860px) {
+    .intro-grid {
+        grid-template-columns: 1.2fr 0.8fr;
+    }
+
     .contact-wrap {
         grid-template-columns: 1fr 1.2fr;
         align-items: start;

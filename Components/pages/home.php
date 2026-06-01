@@ -4,15 +4,43 @@
 
 $timeline = $certificates;
 usort($timeline, static fn (array $a, array $b): int => strcmp($a['issuedAt'], $b['issuedAt']));
+
+$profileImageCandidates = [
+    '/public/assets/images/profile.webp',
+    '/public/assets/images/profile.jpg',
+    '/public/assets/images/profile.jpeg',
+    '/public/assets/images/profile.png',
+    '/public/assets/images/profile.heic',
+];
+
+$profileImagePath = null;
+foreach ($profileImageCandidates as $candidate) {
+    if (is_file(BASE_PATH . $candidate)) {
+        $profileImagePath = $candidate;
+        break;
+    }
+}
 ?>
 <section class="section container intro">
-    <p class="eyebrow">Junior PHP Entwickler</p>
-    <h1>Struktur. Codebezug. Lernkurve.</h1>
-    <p class="lead">
-        7 Monate Praxiserfahrung, saubere Serverlogik und Zertifikate mit direktem Bezug zu PHP, Security und Daten.
-        Ich baue backend-fokussierte Features, die klar wartbar und testbar bleiben.
-    </p>
-    <a class="cta" href="/contact">Zum Erstgespraech</a>
+    <div class="intro-grid">
+        <div>
+            <p class="eyebrow">Junior PHP Entwickler</p>
+            <h1>Struktur. Codebezug. Lernkurve.</h1>
+            <p class="lead">
+                7 Monate Praxiserfahrung, saubere Serverlogik und Zertifikate mit direktem Bezug zu PHP, Security und Daten.
+                Ich baue backend-fokussierte Features, die klar wartbar und testbar bleiben.
+            </p>
+            <a class="cta" href="/contact">Zum Erstgespraech</a>
+        </div>
+
+        <aside class="card profile-photo-wrap">
+            <?php if ($profileImagePath !== null): ?>
+                <img class="profile-photo" src="<?= e($profileImagePath) ?>" alt="Profilfoto">
+            <?php else: ?>
+                <p class="profile-photo-placeholder">Lege dein Bild als /public/assets/images/profile.jpg (oder .png/.webp/.heic) ab.</p>
+            <?php endif; ?>
+        </aside>
+    </div>
 </section>
 
 <section class="section container bento-grid">
