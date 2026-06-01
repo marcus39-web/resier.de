@@ -1,9 +1,9 @@
 <?php
-/** @var array<int, array<string, string>> $certificates */
-/** @var array<int, array<string, string>> $projects */
+/** @var array<int, array{title: string, issuer: string, credentialId: string, issuedAt: string, proofUrl: string, skills: array<int, string>}> $certificates */
+/** @var array<int, array{title: string, summary: string, tech: array<int, string>, challenge: string, solution: string, learning: string, url: string}> $projects */
 
 $timeline = $certificates;
-usort($timeline, static fn (array $a, array $b): int => strcmp($a['date'], $b['date']));
+usort($timeline, static fn (array $a, array $b): int => strcmp($a['issuedAt'], $b['issuedAt']));
 ?>
 <section class="section container intro">
     <p class="eyebrow">Junior PHP Entwickler</p>
@@ -41,10 +41,15 @@ usort($timeline, static fn (array $a, array $b): int => strcmp($a['date'], $b['d
         <div class="timeline">
             <?php foreach ($timeline as $certificate): ?>
                 <div class="timeline-item">
-                    <p class="timeline-date"><?= e($certificate['date']) ?></p>
-                    <h3><?= e($certificate['name']) ?></h3>
-                    <p><?= e($certificate['issuer']) ?> · <?= e($certificate['id']) ?></p>
-                    <a href="<?= e($certificate['url']) ?>" target="_blank" rel="noopener noreferrer">Nachweis</a>
+                    <p class="timeline-date"><?= e($certificate['issuedAt']) ?></p>
+                    <h3><?= e($certificate['title']) ?></h3>
+                    <p><?= e($certificate['issuer']) ?> · <?= e($certificate['credentialId']) ?></p>
+                    <ul class="tag-list compact">
+                        <?php foreach ($certificate['skills'] as $skill): ?>
+                            <li><?= e($skill) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <a href="<?= e($certificate['proofUrl']) ?>" target="_blank" rel="noopener noreferrer">Nachweis</a>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -55,7 +60,12 @@ usort($timeline, static fn (array $a, array $b): int => strcmp($a['date'], $b['d
         <?php foreach (array_slice($projects, 0, 2) as $project): ?>
             <div class="project-mini">
                 <h3><?= e($project['title']) ?></h3>
-                <p><?= e($project['description']) ?></p>
+                <p><?= e($project['summary']) ?></p>
+                <ul class="tag-list compact">
+                    <?php foreach ($project['tech'] as $tech): ?>
+                        <li><?= e($tech) ?></li>
+                    <?php endforeach; ?>
+                </ul>
                 <p><strong>Lerngewinn:</strong> <?= e($project['learning']) ?></p>
             </div>
         <?php endforeach; ?>

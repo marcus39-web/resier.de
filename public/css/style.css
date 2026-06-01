@@ -207,6 +207,15 @@ button:hover {
     font-size: 0.82rem;
 }
 
+.tag-list.compact {
+    margin-top: 0.75rem;
+}
+
+.tag-list.compact li {
+    padding: 0.25rem 0.55rem;
+    font-size: 0.76rem;
+}
+
 .timeline {
     margin-top: 0.75rem;
     border-left: 2px solid #305978;

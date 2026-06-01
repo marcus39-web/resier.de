@@ -12,17 +12,9 @@ $router = new Router();
 $pageController = new PageController();
 $contactController = new ContactController();
 
-$router->get('/', static function () use ($pageController): void {
-	$pageController->home();
-});
-$router->get('/portfolio', static function () use ($pageController): void {
-	$pageController->portfolio();
-});
-$router->get('/contact', static function () use ($contactController): void {
-	$contactController->show();
-});
-$router->post('/contact', static function () use ($contactController): void {
-	$contactController->submit();
-});
+$router->get('/', [$pageController, 'home']);
+$router->get('/portfolio', [$pageController, 'portfolio']);
+$router->get('/contact', [$contactController, 'show']);
+$router->post('/contact', [$contactController, 'submit']);
 
 $router->dispatch($_SERVER['REQUEST_METHOD'] ?? 'GET', $_SERVER['REQUEST_URI'] ?? '/');

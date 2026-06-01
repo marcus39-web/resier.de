@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Data\PortfolioData;
 use App\View;
 
 final class PageController
 {
     public function home(): void
     {
-        $certificates = require DATA_PATH . '/certificates.php';
-        $projects = require DATA_PATH . '/projects.php';
+        $certificates = PortfolioData::certificates();
+        $projects = PortfolioData::projects();
 
         View::render('pages/home', [
             'title' => 'Junior PHP Entwickler',
@@ -22,7 +23,7 @@ final class PageController
 
     public function portfolio(): void
     {
-        $projects = require DATA_PATH . '/projects.php';
+        $projects = PortfolioData::projects();
 
         View::render('pages/portfolio', [
             'title' => 'Portfolio',

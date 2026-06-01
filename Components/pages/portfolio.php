@@ -1,5 +1,5 @@
 <?php
-/** @var array<int, array<string, string>> $projects */
+/** @var array<int, array{title: string, summary: string, tech: array<int, string>, challenge: string, solution: string, learning: string, url: string}> $projects */
 ?>
 <section class="section container">
     <p class="eyebrow">Portfolio</p>
@@ -8,9 +8,14 @@
         <?php foreach ($projects as $project): ?>
             <article class="card">
                 <h2><?= e($project['title']) ?></h2>
-                <p><?= e($project['description']) ?></p>
-                <p><strong>Tech:</strong> <?= e($project['tech']) ?></p>
+                <p><?= e($project['summary']) ?></p>
+                <ul class="tag-list compact">
+                    <?php foreach ($project['tech'] as $tech): ?>
+                        <li><?= e($tech) ?></li>
+                    <?php endforeach; ?>
+                </ul>
                 <p><strong>Problem geloest:</strong> <?= e($project['challenge']) ?></p>
+                <p><strong>Loesungsansatz:</strong> <?= e($project['solution']) ?></p>
                 <p><strong>Lerngewinn:</strong> <?= e($project['learning']) ?></p>
                 <?php if ($project['url'] !== ''): ?>
                     <a href="<?= e($project['url']) ?>" target="_blank" rel="noopener noreferrer">Projekt ansehen</a>
