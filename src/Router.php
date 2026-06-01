@@ -33,6 +33,15 @@ final class Router
             return;
         }
 
-        $handler();
+        try {
+            $handler();
+        } catch (\Throwable $exception) {
+            if (\function_exists('app_log_error')) {
+                \app_log_error($exception);
+            }
+
+            http_response_code(500);
+            echo '500 - Interner Serverfehler';
+        }
     }
 }

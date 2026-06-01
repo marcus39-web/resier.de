@@ -9,50 +9,78 @@ define('BASE_PATH', __DIR__);
 define('COMPONENTS_PATH', BASE_PATH . '/Components');
 define('DATA_PATH', BASE_PATH . '/data');
 
+function app_log_error(\Throwable $exception): void
+{
+    $logDir = DATA_PATH . '/logs';
+
+    try {
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0775, true);
+        }
+
+        $entry = sprintf(
+            "[%s] %s in %s:%d\n%s\n----\n",
+            date('c'),
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine(),
+            $exception->getTraceAsString()
+        );
+
+        file_put_contents($logDir . '/app-error.log', $entry, FILE_APPEND);
+    } catch (\Throwable $loggingException) {
+        error_log($loggingException->getMessage());
+    }
+}
+
 /**
  * Loads key=value pairs from .env into process environment.
  */
 function load_env_file(string $filePath): void
 {
-    if (!is_file($filePath) || !is_readable($filePath)) {
-        return;
-    }
-
-    $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    if ($lines === false) {
-        return;
-    }
-
-    foreach ($lines as $line) {
-        $trimmed = trim($line);
-        if ($trimmed === '' || str_starts_with($trimmed, '#')) {
-            continue;
+    try {
+        if (!is_file($filePath) || !is_readable($filePath)) {
+            return;
         }
 
-        $parts = explode('=', $trimmed, 2);
-        if (count($parts) !== 2) {
-            continue;
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if ($lines === false) {
+            return;
         }
 
-        $key = trim($parts[0]);
-        $value = trim($parts[1]);
+        foreach ($lines as $line) {
+            $trimmed = trim($line);
+            if ($trimmed === '' || str_starts_with($trimmed, '#')) {
+                continue;
+            }
 
-        if ($key === '') {
-            continue;
-        }
+            $parts = explode('=', $trimmed, 2);
+            if (count($parts) !== 2) {
+                continue;
+            }
 
-        if (
-            (str_starts_with($value, '"') && str_ends_with($value, '"'))
-            || (str_starts_with($value, "'") && str_ends_with($value, "'"))
-        ) {
-            $value = substr($value, 1, -1);
-        }
+            $key = trim($parts[0]);
+            $value = trim($parts[1]);
 
-        if (getenv($key) === false) {
-            putenv($key . '=' . $value);
-            $_ENV[$key] = $value;
-            $_SERVER[$key] = $value;
+            if ($key === '') {
+                continue;
+            }
+
+            if (
+                (str_starts_with($value, '"') && str_ends_with($value, '"'))
+                || (str_starts_with($value, "'") && str_ends_with($value, "'"))
+            ) {
+                $value = substr($value, 1, -1);
+            }
+
+            if (getenv($key) === false) {
+                putenv($key . '=' . $value);
+                $_ENV[$key] = $value;
+                $_SERVER[$key] = $value;
+            }
         }
+    } catch (\Throwable $exception) {
+        app_log_error($exception);
     }
 }
 
@@ -71,6 +99,16 @@ function env(string $key, ?string $default = null): ?string
 }
 
 load_env_file(BASE_PATH . '/.env');
+
+set_exception_handler(static function (\Throwable $exception): void {
+    app_log_error($exception);
+
+    if (!headers_sent()) {
+        http_response_code(500);
+    }
+
+    echo '500 - Interner Serverfehler';
+});
 
 spl_autoload_register(static function (string $class): void {
     $prefix = 'App\\';
@@ -101,7 +139,12 @@ function old(string $key): string
 function csrf_token(): string
 {
     if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        try {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        } catch (\Throwable $exception) {
+            app_log_error($exception);
+            $_SESSION['csrf_token'] = hash('sha256', uniqid((string) mt_rand(), true));
+        }
     }
 
     return $_SESSION['csrf_token'];
