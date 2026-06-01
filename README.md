@@ -22,6 +22,18 @@ Dann im Browser aufrufen:
 - http://localhost:8000/portfolio
 - http://localhost:8000/contact
 
+## Zugangsdaten auslagern (.env)
+
+1. Datei `.env.example` nach `.env` kopieren
+2. Eigene Werte eintragen (z. B. SMTP-Zugangsdaten)
+3. `.env` bleibt lokal und wird nicht ins Git-Repository committed
+
+Beispiel in PHP:
+
+```php
+$smtpHost = env('SMTP_HOST', 'localhost');
+```
+
 ## Inhalte anpassen
 
 - Zertifikate: `data/certificates.php`
