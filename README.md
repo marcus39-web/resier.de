@@ -155,15 +155,12 @@ Für aktiven Versand müssen mindestens diese Variablen gesetzt sein:
 
 - SMTP_HOST
 - SMTP_PORT
-- MAIL_FROM_ADDRESS
-- MAIL_TO
-
-Optional:
-
 - SMTP_USERNAME
 - SMTP_PASSWORD
 - SMTP_ENCRYPTION (tls oder ssl)
+- MAIL_FROM_ADDRESS
 - MAIL_FROM_NAME
+- MAIL_TO
 
 ### MailerSend Schnellstart
 
@@ -176,9 +173,9 @@ SMTP_PORT=587
 SMTP_USERNAME=DEIN_MAILERSEND_SMTP_LOGIN
 SMTP_PASSWORD=DEIN_MAILERSEND_SMTP_PASSWORT
 SMTP_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=kontakt@resier.de
+MAIL_FROM_ADDRESS=kontakt@deinedomain.de
 MAIL_FROM_NAME=Marcus Reiser Karriereprofil
-MAIL_TO=deine-zieladresse@hotmail.de
+MAIL_TO=deine-zieladresse@example.com
 ```
 
 3. PHP-Server neu starten und Kontaktformular testen.
@@ -199,7 +196,7 @@ Eine kurze Checkliste liegt zusätzlich in [RELEASE_CHECKLIST.md](RELEASE_CHECKL
 
 Naheliegende Erweiterungen:
 
-- Mailversand statt reinem Logfile
+- DKIM/SPF/DMARC und Deliverability-Optimierung gegen Spam-Einstufung
 - bessere Formular- und Eingabefehler für produktiven Einsatz
 - weitere Projekte mit stärkerem Lehrbezug
 - sprachliche Feinpolitur der noch transliterierten Texte

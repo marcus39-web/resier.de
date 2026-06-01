@@ -21,6 +21,8 @@ $router->get('/projekt', [$pageController, 'project']);
 $router->get('/zertifikat', [$pageController, 'certificate']);
 $router->get('/lebenslauf', [$pageController, 'cv']);
 $router->get('/portfolio', [$pageController, 'portfolio']);
+$router->get('/impressum', [$pageController, 'impressum']);
+$router->get('/datenschutz', [$pageController, 'datenschutz']);
 $router->get('/contact', [$contactController, 'show']);
 $router->post('/contact', [$contactController, 'submit']);
 

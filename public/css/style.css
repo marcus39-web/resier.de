@@ -466,6 +466,40 @@ textarea:focus {
     color: var(--muted);
 }
 
+.footer-links {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.footer-links a:hover {
+    color: var(--accent-dark);
+}
+
+.legal {
+    padding: 2rem 0 3rem;
+}
+
+.legal h1 {
+    margin-top: 0;
+}
+
+.legal .card + .card {
+    margin-top: 1rem;
+}
+
+.legal p,
+.legal li {
+    color: var(--muted);
+}
+
 @keyframes fade-up {
     from {
         opacity: 0;

@@ -137,4 +137,26 @@ final class PageController
             'pageCount' => $pageCount,
         ]);
     }
+
+    // Rechtliche Pflichtseite mit Anbieterkennzeichnung.
+    public function impressum(): void
+    {
+        $profile = require DATA_PATH . '/profile.php';
+
+        View::render('pages/impressum', [
+            'title' => 'Impressum',
+            'profile' => $profile,
+        ]);
+    }
+
+    // Datenschutzseite mit kompakten Informationen zur Datenverarbeitung.
+    public function datenschutz(): void
+    {
+        $profile = require DATA_PATH . '/profile.php';
+
+        View::render('pages/datenschutz', [
+            'title' => 'Datenschutz',
+            'profile' => $profile,
+        ]);
+    }
 }

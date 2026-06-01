@@ -2,7 +2,10 @@
 </main>
 <footer class="site-footer">
     <div class="container">
-        <p>Gebaut mit cleanem Vanilla PHP (OOP, Routing, Templates, CSRF, XSS-Schutz).</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="/impressum">Impressum</a>
+            <a href="/datenschutz">Datenschutz</a>
+        </nav>
     </div>
 </footer>
 </body>
