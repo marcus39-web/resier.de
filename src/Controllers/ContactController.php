@@ -81,6 +81,10 @@ final class ContactController
                 mkdir($logDir, 0775, true);
             }
 
+            $logFile = $logDir . '/contact.log';
+            // Alte Eintraege nach Fristablauf automatisch bereinigen.
+            $this->purgeExpiredContactLogEntries($logFile);
+
             $entry = sprintf(
                 "[%s] %s <%s>\n%s\n----\n",
                 date('c'),
@@ -89,7 +93,7 @@ final class ContactController
                 $message
             );
 
-            file_put_contents($logDir . '/contact.log', $entry, FILE_APPEND);
+            file_put_contents($logFile, $entry, FILE_APPEND);
         } catch (\Throwable $exception) {
             if (\function_exists('app_log_error')) {
                 \app_log_error($exception);
@@ -180,7 +184,7 @@ final class ContactController
         $toAddress = trim((string) env('MAIL_TO', ''));
 
         // Hauptmail an die Zieladresse der Bewerbung/Website.
-        $subject = 'Kontaktformular resier.de | Neue Anfrage von ' . $senderName;
+        $subject = 'Kontaktformular marcusreiser.de | Neue Anfrage von ' . $senderName;
         $body = "Name: {$senderName}\n"
             . "E-Mail: {$senderEmail}\n"
             . "Zeitpunkt: " . date('d.m.Y H:i:s') . "\n\n"
@@ -199,10 +203,15 @@ final class ContactController
 
         // Auto-Bestaetigung an den Absender senden, ohne die Hauptanfrage zu blockieren.
         try {
-            $confirmSubject = 'Eingangsbestätigung Ihrer Nachricht an resier.de';
+            $confirmSubject = 'Eingangsbestaetigung Ihrer Nachricht an marcusreiser.de';
             $confirmBody = "Guten Tag {$senderName},\n\n"
-                . "vielen Dank für Ihre Nachricht über das Kontaktformular von resier.de.\n"
-                . "Ihre Anfrage ist bei mir eingegangen und wird zeitnah bearbeitet.\n\n"
+                . "vielen Dank fuer Ihre Nachricht ueber das Kontaktformular von marcusreiser.de.\n"
+                . "Ihre Anfrage ist eingegangen und wird zeitnah bearbeitet.\n\n"
+                . "Hinweis zum Datenschutz:\n"
+                . "Ihre Angaben aus dem Kontaktformular werden zur Bearbeitung Ihrer Anfrage verarbeitet\n"
+                . "und in der Regel nach 6 Monaten geloescht, sofern keine gesetzlichen\n"
+                . "Aufbewahrungspflichten entgegenstehen.\n"
+                . "Sie koennen jederzeit die Loeschung Ihrer Daten verlangen.\n\n"
                 . "Ihre Nachricht:\n"
                 . "--------------------\n"
                 . $message . "\n"
@@ -215,6 +224,57 @@ final class ContactController
             if (\function_exists('app_log_error')) {
                 \app_log_error($exception);
             }
+        }
+    }
+
+    private function purgeExpiredContactLogEntries(string $logFile): void
+    {
+        if (!is_file($logFile) || !is_readable($logFile)) {
+            return;
+        }
+
+        $retentionDays = (int) env('CONTACT_RETENTION_DAYS', '183');
+        if ($retentionDays <= 0) {
+            return;
+        }
+
+        $rawContent = file_get_contents($logFile);
+        if (!is_string($rawContent) || $rawContent === '') {
+            return;
+        }
+
+        $normalizedContent = str_replace(["\r\n", "\r"], "\n", $rawContent);
+        $blocks = explode("\n----\n", $normalizedContent);
+        $cutoffTimestamp = time() - ($retentionDays * 86400);
+
+        $keptBlocks = [];
+        foreach ($blocks as $block) {
+            $block = trim($block);
+            if ($block === '') {
+                continue;
+            }
+
+            $firstLine = strtok($block, "\n");
+            if (!is_string($firstLine)) {
+                continue;
+            }
+
+            if (preg_match('/^\[([^\]]+)\]/', $firstLine, $matches) === 1) {
+                $entryTimestamp = strtotime($matches[1]);
+                if ($entryTimestamp !== false && $entryTimestamp < $cutoffTimestamp) {
+                    continue;
+                }
+            }
+
+            $keptBlocks[] = $block;
+        }
+
+        $newContent = $keptBlocks === []
+            ? ''
+            : implode("\n----\n", $keptBlocks) . "\n----\n";
+
+        if ($newContent !== $normalizedContent) {
+            file_put_contents($logFile, $newContent);
         }
     }
 }

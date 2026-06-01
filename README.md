@@ -124,6 +124,7 @@ Umgesetzt sind bereits:
 - serverseitige Pflichtfeld- und Längenprüfung
 - SMTP-Versand bei gesetzten MAIL-/SMTP-Variablen
 - automatische Eingangsbestätigung an den Absender
+- automatische Loeschung alter Kontakt-Logeintraege nach Fristablauf
 - Logging technischer Fehler
 
 Wenn SMTP noch nicht konfiguriert ist, wird die Nachricht weiterhin sicher im Log gespeichert und nicht verworfen.
@@ -162,6 +163,10 @@ Für aktiven Versand müssen mindestens diese Variablen gesetzt sein:
 - MAIL_FROM_NAME
 - MAIL_TO
 
+Optional:
+
+- CONTACT_RETENTION_DAYS (Standard: 183 Tage)
+
 ### MailerSend Schnellstart
 
 1. MailerSend-Konto anlegen, Domain verifizieren und unter SMTP Relay einen SMTP-Benutzer erzeugen.
@@ -176,6 +181,7 @@ SMTP_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=kontakt@deinedomain.de
 MAIL_FROM_NAME=Marcus Reiser Karriereprofil
 MAIL_TO=deine-zieladresse@example.com
+CONTACT_RETENTION_DAYS=183
 ```
 
 3. PHP-Server neu starten und Kontaktformular testen.

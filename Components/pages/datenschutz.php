@@ -35,6 +35,10 @@
                 Die Daten werden zusaetzlich lokal in einer Logdatei gespeichert und bei aktivierter SMTP-Konfiguration per
                 E-Mail weitergeleitet.
             </p>
+            <p>
+                Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Anbahnung/Beantwortung Ihrer Anfrage) sowie
+                Art. 6 Abs. 1 lit. f DSGVO (sicherer und stabiler Betrieb der Website).
+            </p>
         </article>
 
         <article class="card">
@@ -46,7 +50,15 @@
         </article>
 
         <article class="card">
-            <h2>5. Ihre Rechte</h2>
+            <h2>5. Speicherdauer und Loeschung</h2>
+            <p>
+                Daten aus Kontaktanfragen werden nach Fristablauf automatisch geloescht (Standard: 6 Monate), sofern keine
+                gesetzlichen Aufbewahrungspflichten oder berechtigten Gruende fuer eine laengere Speicherung bestehen.
+            </p>
+        </article>
+
+        <article class="card">
+            <h2>6. Ihre Rechte</h2>
             <p>
                 Sie haben im Rahmen der gesetzlichen Vorgaben insbesondere das Recht auf Auskunft, Berichtigung, Loeschung,
                 Einschraenkung der Verarbeitung sowie Widerspruch gegen die Verarbeitung Ihrer Daten.
@@ -54,7 +66,7 @@
         </article>
 
         <article class="card">
-            <h2>6. Aktualisierung</h2>
+            <h2>7. Aktualisierung</h2>
             <p>
                 Diese Datenschutzhinweise koennen bei Bedarf angepasst werden, um sie aktuell und rechtlich korrekt zu halten.
             </p>

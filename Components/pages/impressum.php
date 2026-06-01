@@ -28,5 +28,13 @@
             </p>
         </article>
 
+        <article class="card">
+            <h2>Datenschutzhinweis</h2>
+            <p>
+                Informationen zur Verarbeitung von Kontaktanfragen, zu Speicherdauer und Loeschfristen finden Sie in der
+                <a href="/datenschutz">Datenschutzerklaerung</a>.
+            </p>
+        </article>
+
     </div>
 </section>
