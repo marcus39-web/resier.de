@@ -1,15 +1,22 @@
 <?php
+/** @var array<string, mixed> $profile */
 /** @var array<int, string> $errors */
 /** @var string|null $success */
 ?>
 <section class="section container contact-wrap">
     <div>
         <p class="eyebrow">Kontakt</p>
-        <h1>Schreib mir direkt</h1>
+        <h1>Anfrage fuer Schulen und Bildungstraeger</h1>
         <p>
-            Das Formular ist bewusst in purem PHP gebaut: Validierung, CSRF-Token, XSS-Schutz und
-            strukturierte Server-Logik ohne Plugin-Abhaengigkeiten.
+            Wenn Sie einen Dozenten oder Lernprozessbegleiter fuer kaufmaennische Bildung, IT-Grundlagen,
+            Pruefungsvorbereitung oder berufliche Qualifizierung suchen, freue ich mich ueber Ihre Nachricht.
         </p>
+        <div class="card contact-facts">
+            <p><strong>Zielrolle:</strong> <?= e((string) ($profile['targetRole'] ?? '')) ?></p>
+            <p><strong>Region:</strong> <?= e((string) ($profile['targetRegion'] ?? '')) ?></p>
+            <p><strong>Telefon:</strong> <a href="tel:<?= e((string) ($profile['phone'] ?? '')) ?>"><?= e((string) ($profile['phone'] ?? '')) ?></a></p>
+            <p><strong>E-Mail:</strong> <a href="mailto:<?= e((string) ($profile['email'] ?? '')) ?>"><?= e((string) ($profile['email'] ?? '')) ?></a></p>
+        </div>
     </div>
 
     <div class="card">
@@ -19,7 +26,7 @@
 
         <?php if (!empty($errors)): ?>
             <div class="notice error">
-                <strong>Bitte pruefe deine Eingabe:</strong>
+                <strong>Bitte pruefen Sie Ihre Eingabe:</strong>
                 <ul>
                     <?php foreach ($errors as $error): ?>
                         <li><?= e($error) ?></li>
@@ -42,7 +49,7 @@
 
             <input class="hp" type="text" name="website" value="" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-            <button type="submit">Nachricht senden</button>
+            <button type="submit">Anfrage senden</button>
         </form>
     </div>
 </section>

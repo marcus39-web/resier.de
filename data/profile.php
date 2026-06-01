@@ -21,6 +21,11 @@ return [
         'Ich suche eine langfristige Perspektive in der Fachkräfteausbildung, um Lernende fachlich und methodisch sicher zum Abschluss zu begleiten.',
     ],
     'projectFocusUrl' => 'https://github.com/marcus39-web/GHI-CSharp-Roboter-OOP.git',
+    'cvProofUrls' => [
+        '/Components/images/lebenlslauf_seite1.jpg',
+        '/Components/images/lebenlslauf_seite2.jpg',
+        '/Components/images/lebenlslauf_seite3.jpg',
+    ],
     'career' => [
         [
             'period' => '08/2025 - 03/2026',
@@ -64,7 +69,7 @@ return [
         ],
         [
             'period' => '01/2008 - 08/2012',
-            'role' => 'Geschaeftsstellenleiter',
+            'role' => 'Geschäftsstellenleiter',
             'organization' => 'AvjS GmbH Personaldienstleistung',
             'details' => [
                 'Operative Leitung, Personaldisposition und Kundenbetreuung.',

@@ -163,6 +163,11 @@ button:hover {
     transform: translateY(-1px);
 }
 
+.card a.cta,
+.card a.cv-nav-link {
+    color: #04211e;
+}
+
 .section {
     padding: 1.5rem 0 3rem;
 }
@@ -313,12 +318,86 @@ button:hover {
 .inline-link {
     display: inline-block;
     margin-top: 0.5rem;
+    color: var(--accent);
+}
+
+.inline-link:visited {
+    color: var(--accent);
+}
+
+.inline-link:hover {
+    color: #7cebdd;
+}
+
+.cv-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.cv-links .subtle {
+    margin: 0;
+    width: 100%;
+}
+
+.cv-page {
+    padding-top: 3rem;
+}
+
+.cv-header {
+    margin-bottom: 1rem;
+}
+
+.cv-card {
+    padding: 1.25rem;
+}
+
+.cv-image-link {
+    display: block;
+}
+
+.cv-image {
+    display: block;
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #0d2032;
+}
+
+.cv-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.cv-nav-link {
+    min-width: 110px;
+    text-align: center;
+}
+
+.cv-nav-placeholder {
+    min-width: 110px;
 }
 
 .contact-wrap {
     display: grid;
     gap: 1.2rem;
     grid-template-columns: 1fr;
+}
+
+.contact-facts {
+    margin-top: 1rem;
+}
+
+.contact-facts p {
+    margin: 0.45rem 0;
 }
 
 .form-grid {

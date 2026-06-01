@@ -3,7 +3,11 @@
 /** @var array<int, array{title: string, issuer: string, credentialId: string, issuedAt: string, proofUrls: array<int, string>, skills: array<int, string>}> $certificates */
 /** @var array<int, array{title: string, summary: string, tech: array<int, string>, challenge: string, solution: string, learning: string, url: string}> $projects */
 
-$timeline = $certificates;
+$timeline = array_map(
+    static fn (array $certificate, int $index): array => $certificate + ['proofId' => $index],
+    $certificates,
+    array_keys($certificates)
+);
 usort($timeline, static fn (array $a, array $b): int => strcmp($a['issuedAt'], $b['issuedAt']));
 
 $profileImageCandidates = [
@@ -38,7 +42,7 @@ foreach ($profileImageCandidates as $candidate) {
                 <?= e((string) ($profile['name'] ?? '')) ?> · <?= e((string) ($profile['headline'] ?? '')) ?><br>
                 <?= e((string) ($profile['location'] ?? '')) ?> · <?= e((string) ($profile['phone'] ?? '')) ?> · <?= e((string) ($profile['email'] ?? '')) ?>
             </p>
-            <a class="cta" href="/contact">Zum Erstgespraech</a>
+            <a class="cta" href="/contact">Zum Erstgespräch</a>
         </div>
 
         <aside class="card profile-photo-wrap">
@@ -112,7 +116,7 @@ foreach ($profileImageCandidates as $candidate) {
         <?php endif; ?>
     </article>
 
-    <article class="card bento timeline-block">
+    <article id="zertifikate-timeline" class="card bento timeline-block">
         <h2>Zertifikate Timeline</h2>
         <div class="timeline">
             <?php foreach ($timeline as $certificate): ?>
@@ -126,11 +130,7 @@ foreach ($profileImageCandidates as $candidate) {
                         <?php endforeach; ?>
                     </ul>
                     <div class="proof-links">
-                        <?php foreach ($certificate['proofUrls'] as $index => $proofUrl): ?>
-                            <a href="<?= e($proofUrl) ?>" target="_blank" rel="noopener noreferrer">
-                                <?= count($certificate['proofUrls']) > 1 ? 'Nachweis ' . ($index + 1) : 'Nachweis' ?>
-                            </a>
-                        <?php endforeach; ?>
+                        <a href="/zertifikat?id=<?= (int) ($certificate['proofId'] ?? 0) ?>">Nachweis öffnen</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -172,6 +172,12 @@ foreach ($profileImageCandidates as $candidate) {
                 </div>
             <?php endforeach; ?>
         </div>
+        <?php if (!empty($profile['cvProofUrls'])): ?>
+            <div class="cv-links">
+                <p class="subtle"><strong>Lebenslauf als Nachweis:</strong></p>
+                <a href="/lebenslauf">Lebenslauf öffnen</a>
+            </div>
+        <?php endif; ?>
     </article>
 
     <article class="card bento qualification-block">
@@ -186,7 +192,7 @@ foreach ($profileImageCandidates as $candidate) {
     <article class="card bento contact-block">
         <h2>Kontakt</h2>
         <p>
-            Wenn Sie einen Dozenten mit paedagogischer Erfahrung und IT-Praxis suchen,
+            Wenn Sie einen Dozenten mit pädagogischer Erfahrung und IT-Praxis suchen,
             freue ich mich auf ein persönliches Kennenlernen.
         </p>
         <p class="subtle"><strong>Region:</strong> <?= e((string) ($profile['targetRegion'] ?? '')) ?></p>

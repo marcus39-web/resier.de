@@ -10,8 +10,11 @@ final class ContactController
 {
     public function show(): void
     {
+        $profile = require DATA_PATH . '/profile.php';
+
         View::render('pages/contact', [
             'title' => 'Kontakt',
+            'profile' => $profile,
             'errors' => (array) ($_SESSION['form_errors'] ?? []),
             'success' => flash('success'),
         ]);
