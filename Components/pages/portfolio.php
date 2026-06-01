@@ -3,7 +3,7 @@
 ?>
 <section class="section container">
     <p class="eyebrow">Portfolio</p>
-    <h1>Praxisprojekte aus meiner Lernphase</h1>
+    <h1>Praxisprojekte fuer Unterricht und Anwendungsentwicklung</h1>
     <div class="grid cards">
         <?php foreach ($projects as $project): ?>
             <article class="card">

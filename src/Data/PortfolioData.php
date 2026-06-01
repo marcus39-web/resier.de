@@ -8,7 +8,7 @@ use UnexpectedValueException;
 
 final class PortfolioData
 {
-    /** @return array<int, array{title: string, issuer: string, credentialId: string, issuedAt: string, proofUrl: string, skills: array<int, string>}> */
+    /** @return array<int, array{title: string, issuer: string, credentialId: string, issuedAt: string, proofUrls: array<int, string>, skills: array<int, string>}> */
     public static function certificates(): array
     {
         $data = require DATA_PATH . '/certificates.php';
@@ -29,7 +29,7 @@ final class PortfolioData
                 'issuer' => self::stringValue($certificate, 'issuer', 'certificate'),
                 'credentialId' => self::stringValue($certificate, 'credentialId', 'certificate'),
                 'issuedAt' => self::stringValue($certificate, 'issuedAt', 'certificate'),
-                'proofUrl' => self::stringValue($certificate, 'proofUrl', 'certificate'),
+                'proofUrls' => self::stringList($certificate, 'proofUrls', 'certificate'),
                 'skills' => self::stringList($certificate, 'skills', 'certificate'),
             ];
         }

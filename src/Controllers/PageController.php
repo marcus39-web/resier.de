@@ -13,9 +13,11 @@ final class PageController
     {
         $certificates = PortfolioData::certificates();
         $projects = PortfolioData::projects();
+        $profile = require DATA_PATH . '/profile.php';
 
         View::render('pages/home', [
-            'title' => 'Junior PHP Entwickler',
+            'title' => 'Dozent und Lernprozessbegleiter',
+            'profile' => $profile,
             'certificates' => $certificates,
             'projects' => $projects,
         ]);
