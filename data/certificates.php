@@ -39,7 +39,7 @@ return [
         'skills' => ['Didaktik', 'Lernprozessbegleitung', 'Prüfungsvorbereitung'],
     ],
     [
-        'title' => 'Betriebswirt (HWK)',
+        'title' => 'Betriebswirt des Handwerks (HWK)',
         'issuer' => 'Handwerkskammer (HWK)',
         'credentialId' => 'HWK-BW-REISER',
         'issuedAt' => '2022-09-30',

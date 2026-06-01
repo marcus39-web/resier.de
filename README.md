@@ -20,6 +20,7 @@ Die Website kombiniert drei Aufgaben in einer Anwendung:
 - View-Rendering über zentrale Layout- und Seitentemplates
 - datengetriebene Inhalte aus PHP-Arrays unter [data](data)
 - Kontaktformular mit CSRF-Schutz, Honeypot, Escaping und Server-Validierung
+- SMTP-Mailversand für Kontaktanfragen über .env-Konfiguration
 - Fehlerprotokollierung über [bootstrap.php](bootstrap.php)
 - eigene Detailansichten für Lebenslauf, Zertifikate und Projekt-Fokus mit Rücksprüngen zur passenden Stelle auf der Startseite
 
@@ -53,6 +54,7 @@ resier.de/
 - [src/View.php](src/View.php): rendert Header, Seite und Footer
 - [src/Controllers/PageController.php](src/Controllers/PageController.php): Seitenlogik für Startseite, Portfolio, Lebenslauf, Zertifikate und Projektdetails
 - [src/Controllers/ContactController.php](src/Controllers/ContactController.php): Anzeige und Verarbeitung des Kontaktformulars
+- [src/Mail/SmtpMailer.php](src/Mail/SmtpMailer.php): SMTP-Transport für den E-Mail-Versand
 - [src/Data/PortfolioData.php](src/Data/PortfolioData.php): Validierung und Normalisierung der Rohdaten
 - [Components/pages/home.php](Components/pages/home.php): Startseite
 - [Components/pages/contact.php](Components/pages/contact.php): Kontaktseite
@@ -110,7 +112,7 @@ Dadurch bleibt die Navigation konsistent, und Nutzer können jeweils gezielt zur
 
 ## Kontaktformular
 
-Das Formular auf [Components/pages/contact.php](Components/pages/contact.php) verarbeitet Eingaben serverseitig und speichert Nachrichten lokal in:
+Das Formular auf [Components/pages/contact.php](Components/pages/contact.php) verarbeitet Eingaben serverseitig, versendet sie per SMTP (wenn konfiguriert) und speichert zusätzlich lokal in:
 
 - [data/messages/contact.log](data/messages/contact.log)
 
@@ -120,9 +122,18 @@ Umgesetzt sind bereits:
 - Honeypot-Feld
 - Escaping über die Hilfsfunktion e()
 - serverseitige Pflichtfeld- und Längenprüfung
+- SMTP-Versand bei gesetzten MAIL-/SMTP-Variablen
+- automatische Eingangsbestätigung an den Absender
 - Logging technischer Fehler
 
-Hinweis: Für produktiven Mailversand wären zusätzlich SMTP-Anbindung, Rate-Limiting und Spam-Schutz sinnvoll.
+Wenn SMTP noch nicht konfiguriert ist, wird die Nachricht weiterhin sicher im Log gespeichert und nicht verworfen.
+
+Empfehlung fuer die Praxis: MailerSend als SMTP-Dienst nutzen.
+
+Zusätzlich umgesetzt:
+
+- klarer Betreff für eingehende Kontaktmails (`Kontaktformular resier.de | Neue Anfrage von ...`)
+- Bestätigungsmail an den Absender nach erfolgreichem Versand
 
 ## Umgebungsvariablen
 
@@ -139,6 +150,38 @@ Beispiel:
 ```php
 $smtpHost = env('SMTP_HOST', 'localhost');
 ```
+
+Für aktiven Versand müssen mindestens diese Variablen gesetzt sein:
+
+- SMTP_HOST
+- SMTP_PORT
+- MAIL_FROM_ADDRESS
+- MAIL_TO
+
+Optional:
+
+- SMTP_USERNAME
+- SMTP_PASSWORD
+- SMTP_ENCRYPTION (tls oder ssl)
+- MAIL_FROM_NAME
+
+### MailerSend Schnellstart
+
+1. MailerSend-Konto anlegen, Domain verifizieren und unter SMTP Relay einen SMTP-Benutzer erzeugen.
+2. In `.env` folgende Werte setzen:
+
+```env
+SMTP_HOST=smtp.mailersend.net
+SMTP_PORT=587
+SMTP_USERNAME=DEIN_MAILERSEND_SMTP_LOGIN
+SMTP_PASSWORD=DEIN_MAILERSEND_SMTP_PASSWORT
+SMTP_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=kontakt@resier.de
+MAIL_FROM_NAME=Marcus Reiser Karriereprofil
+MAIL_TO=deine-zieladresse@hotmail.de
+```
+
+3. PHP-Server neu starten und Kontaktformular testen.
 
 ## Qualität und Wartung
 

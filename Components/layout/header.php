@@ -18,7 +18,7 @@
 <header class="site-header">
     <!-- Globale Hauptnavigation fuer alle Seiten -->
     <nav class="nav container">
-        <a class="brand" href="/">PHP Karriereprofil</a>
+        <a class="brand" href="/">Marcus Reiser Karriereprofil</a>
         <div class="nav-links">
             <a href="/">Start</a>
             <a href="/portfolio">Portfolio</a>

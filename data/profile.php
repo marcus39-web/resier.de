@@ -7,7 +7,7 @@ declare(strict_types=1);
 return [
     // Stammdaten und Kurzprofil.
     'name' => 'Marcus Klaus-Dieter Reiser',
-    'headline' => 'Berufspädagogischer Hintergrund | Betriebswirt (HWK) | IT-Spezialist',
+    'headline' => 'Betriebswirt des Handwerks (HWK) | Berufspädagogischer Hintergrund | IT-Spezialist',
     'location' => 'Lerchenweg 16, 99428 Weimar/Legefeld',
     'phone' => '0176 12742069',
     'email' => 'marcus.39@hotmail.de',
@@ -111,8 +111,8 @@ return [
     ],
     // Kompakte Abschluss- und Weiterbildungsuebersicht.
     'qualifications' => [
-        'Berufspädagogischer Hintergrund und Ausbilder-Eignung (AEVO).',
         'Betriebswirt des Handwerks (HWK).',
+        'Berufspädagogischer Hintergrund und Ausbilder-Eignung (AEVO).',
         'Industriekaufmann (IHK), Ausbildung bei Dekra/BMW AG.',
         'Facharbeiter Dreher (IHK), Ausbildung bei BMW AG München.',
         'WPI Professional Certification: JavaScript/TypeScript Frontend-Entwickler.',

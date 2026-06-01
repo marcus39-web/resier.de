@@ -7,10 +7,10 @@
 <section class="section container contact-wrap">
     <div>
         <p class="eyebrow">Kontakt</p>
-        <h1>Anfrage fuer Schulen und Bildungstraeger</h1>
+        <h1>Anfrage für Schulen und Bildungsträger</h1>
         <p>
-            Wenn Sie einen Dozenten oder Lernprozessbegleiter fuer kaufmaennische Bildung, IT-Grundlagen,
-            Pruefungsvorbereitung oder berufliche Qualifizierung suchen, freue ich mich ueber Ihre Nachricht.
+            Wenn Sie einen Dozenten oder Lernprozessbegleiter für kaufmännische Bildung, IT-Grundlagen,
+            Prüfungsvorbereitung oder berufliche Qualifizierung suchen, freue ich mich über Ihre Nachricht.
         </p>
         <div class="card contact-facts">
             <!-- Direkte Kontaktdaten fuer schnelle Rueckmeldung ohne Formular -->
@@ -28,7 +28,7 @@
 
         <?php if (!empty($errors)): ?>
             <div class="notice error">
-                <strong>Bitte pruefen Sie Ihre Eingabe:</strong>
+                <strong>Bitte prüfen Sie Ihre Eingabe:</strong>
                 <ul>
                     <?php foreach ($errors as $error): ?>
                         <li><?= e($error) ?></li>

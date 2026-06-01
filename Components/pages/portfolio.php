@@ -4,7 +4,7 @@
 ?>
 <section class="section container">
     <p class="eyebrow">Portfolio</p>
-    <h1>Praxisprojekte fuer Unterricht und Anwendungsentwicklung</h1>
+    <h1>Praxisprojekte für Unterricht und Anwendungsentwicklung</h1>
     <div class="grid cards">
         <!-- Jedes Projekt wird als eigenstaendige Karte gerendert -->
         <?php foreach ($projects as $project): ?>
@@ -16,8 +16,8 @@
                         <li><?= e($tech) ?></li>
                     <?php endforeach; ?>
                 </ul>
-                <p><strong>Problem geloest:</strong> <?= e($project['challenge']) ?></p>
-                <p><strong>Loesungsansatz:</strong> <?= e($project['solution']) ?></p>
+                <p><strong>Problem gelöst:</strong> <?= e($project['challenge']) ?></p>
+                <p><strong>Lösungsansatz:</strong> <?= e($project['solution']) ?></p>
                 <p><strong>Lerngewinn:</strong> <?= e($project['learning']) ?></p>
                 <?php if ($project['url'] !== ''): ?>
                     <a href="<?= e($project['url']) ?>" target="_blank" rel="noopener noreferrer">Projekt ansehen</a>
