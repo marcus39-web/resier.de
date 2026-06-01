@@ -1,8 +1,11 @@
 <?php
 
+// Rohdaten fuer Projektkarten, Projektfokus und Detailansichten.
+
 declare(strict_types=1);
 
 return [
+    // Schwerpunktprojekt mit direktem GitHub-Bezug.
     [
         'title' => 'GHI CSharp Roboter OOP',
         'summary' => 'Objektorientiertes C#-Projekt mit Fokus auf sauberer Klassenstruktur, Kapselung und wartbarer Logik.',
@@ -12,6 +15,7 @@ return [
         'learning' => 'Architekturdenken, saubere Modellierung von Objekten und strukturierte Weiterentwicklung im Team-Workflow.',
         'url' => 'https://github.com/marcus39-web/GHI-CSharp-Roboter-OOP.git',
     ],
+    // Weitere kleinere Praxis- und Lernprojekte.
     [
         'title' => 'REST API Mini-Service',
         'summary' => 'Einfacher API-Endpunkt fuer To-do-Daten mit JSON-Antworten und HTTP-Statuscodes.',

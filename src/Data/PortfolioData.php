@@ -6,6 +6,7 @@ namespace App\Data;
 
 use UnexpectedValueException;
 
+// Validiert Rohdaten aus /data und liefert ein konsistentes App-Format zurueck.
 final class PortfolioData
 {
     /** @return array<int, array{title: string, issuer: string, credentialId: string, issuedAt: string, proofUrls: array<int, string>, skills: array<int, string>}> */
@@ -68,6 +69,7 @@ final class PortfolioData
     }
 
     /** @param array<string, mixed> $item */
+    // Erzwingt ein nicht-leeres String-Feld.
     private static function stringValue(array $item, string $key, string $context): string
     {
         $value = $item[$key] ?? null;
@@ -80,6 +82,7 @@ final class PortfolioData
     }
 
     /** @param array<string, mixed> $item */
+    // Erlaubt optionale String-Felder, aber keine anderen Datentypen.
     private static function optionalStringValue(array $item, string $key, string $context): string
     {
         $value = $item[$key] ?? '';
@@ -94,6 +97,7 @@ final class PortfolioData
     /** @param array<string, mixed> $item
      *  @return array<int, string>
      */
+    // Validiert Listen wie Technologien, Skills oder Nachweis-URLs.
     private static function stringList(array $item, string $key, string $context): array
     {
         $value = $item[$key] ?? null;

@@ -1,4 +1,5 @@
 <?php
+// Kontaktseite fuer Schulen und Bildungstraeger mit Formular und Direktdaten.
 /** @var array<string, mixed> $profile */
 /** @var array<int, string> $errors */
 /** @var string|null $success */
@@ -12,6 +13,7 @@
             Pruefungsvorbereitung oder berufliche Qualifizierung suchen, freue ich mich ueber Ihre Nachricht.
         </p>
         <div class="card contact-facts">
+            <!-- Direkte Kontaktdaten fuer schnelle Rueckmeldung ohne Formular -->
             <p><strong>Zielrolle:</strong> <?= e((string) ($profile['targetRole'] ?? '')) ?></p>
             <p><strong>Region:</strong> <?= e((string) ($profile['targetRegion'] ?? '')) ?></p>
             <p><strong>Telefon:</strong> <a href="tel:<?= e((string) ($profile['phone'] ?? '')) ?>"><?= e((string) ($profile['phone'] ?? '')) ?></a></p>
@@ -35,6 +37,7 @@
             </div>
         <?php endif; ?>
 
+        <!-- Formular bleibt serverseitig validiert und CSRF-geschuetzt -->
         <form method="post" action="/contact" class="form-grid" novalidate>
             <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>">
 

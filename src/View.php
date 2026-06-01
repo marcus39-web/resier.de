@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+// Rendert Layout und Seitenvorlage in fester Reihenfolge.
 final class View
 {
     /** @param array<string, mixed> $data */
@@ -19,6 +20,7 @@ final class View
             }
         }
 
+        // Daten nur innerhalb des lokalen Render-Scope extrahieren.
         $render = static function (string $__path, array $__data): void {
             extract($__data, EXTR_SKIP);
             require $__path;

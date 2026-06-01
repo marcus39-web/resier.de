@@ -1,8 +1,11 @@
 <?php
 
+// Rohdaten fuer Zertifikate und Zeugnisse inklusive Nachweis-URLs.
+
 declare(strict_types=1);
 
 return [
+    // Klassische Berufsabschluesse und paedagogische Nachweise.
     [
         'title' => 'Facharbeiter Dreher (IHK)',
         'issuer' => 'BMW AG München / IHK',
@@ -43,6 +46,7 @@ return [
         'proofUrls' => ['/Components/images/zeugnis_betriebswirt_hwk_marcus_reiser.jpg'],
         'skills' => ['Wirtschaftliche Praxis', 'Personal', 'Organisation'],
     ],
+    // Aktuelle IT-Weiterbildungen und Fachzertifikate.
     [
         'title' => 'Weiterbildung Anwendungsinformatik',
         'issuer' => 'IAD Erfurt',

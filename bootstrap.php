@@ -1,5 +1,7 @@
 <?php
 
+// Gemeinsamer Bootstrap: Session, Konstanten, Autoloading, Helfer und Fehlerbehandlung.
+
 declare(strict_types=1);
 
 session_start();
@@ -9,6 +11,7 @@ define('BASE_PATH', __DIR__);
 define('COMPONENTS_PATH', BASE_PATH . '/Components');
 define('DATA_PATH', BASE_PATH . '/data');
 
+// Schreibt unerwartete Fehler in ein lokales Log unter /data/logs.
 function app_log_error(\Throwable $exception): void
 {
     $logDir = DATA_PATH . '/logs';
@@ -100,6 +103,7 @@ function env(string $key, ?string $default = null): ?string
 
 load_env_file(BASE_PATH . '/.env');
 
+// Globaler Fallback fuer unbehandelte Exceptions.
 set_exception_handler(static function (\Throwable $exception): void {
     app_log_error($exception);
 
@@ -110,6 +114,7 @@ set_exception_handler(static function (\Throwable $exception): void {
     echo '500 - Interner Serverfehler';
 });
 
+// Einfacher PSR-4-aehnlicher Autoloader fuer Klassen unter /src.
 spl_autoload_register(static function (string $class): void {
     $prefix = 'App\\';
     $baseDir = BASE_PATH . '/src/';
@@ -126,16 +131,19 @@ spl_autoload_register(static function (string $class): void {
     }
 });
 
+// HTML-Ausgabe escapen, um XSS in Views zu vermeiden.
 function e(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 }
 
+// Formularwerte nach Redirect erneut anzeigen.
 function old(string $key): string
 {
     return e((string) ($_SESSION['form_old'][$key] ?? ''));
 }
 
+// CSRF-Token einmal pro Session erzeugen und wiederverwenden.
 function csrf_token(): string
 {
     if (empty($_SESSION['csrf_token'])) {
@@ -150,6 +158,7 @@ function csrf_token(): string
     return $_SESSION['csrf_token'];
 }
 
+// Eingehenden CSRF-Token gegen den Session-Wert pruefen.
 function csrf_token_is_valid(?string $token): bool
 {
     $sessionToken = (string) ($_SESSION['csrf_token'] ?? '');
@@ -157,6 +166,7 @@ function csrf_token_is_valid(?string $token): bool
     return $sessionToken !== '' && $token !== null && hash_equals($sessionToken, $token);
 }
 
+// Einmalige Flash-Nachricht aus der Session lesen und direkt verwerfen.
 function flash(string $key): ?string
 {
     if (!isset($_SESSION['flash'][$key])) {

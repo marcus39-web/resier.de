@@ -6,8 +6,10 @@ namespace App\Controllers;
 
 use App\View;
 
+// Steuert Anzeige und Verarbeitung des Kontaktformulars.
 final class ContactController
 {
+    // Zeigt das Formular zusammen mit Fehlermeldungen und Profildaten an.
     public function show(): void
     {
         $profile = require DATA_PATH . '/profile.php';
@@ -22,6 +24,7 @@ final class ContactController
         unset($_SESSION['form_errors'], $_SESSION['form_old']);
     }
 
+    // Validiert den Form-Post und schreibt gueltige Nachrichten in das Log.
     public function submit(): void
     {
         $name = trim((string) ($_POST['name'] ?? ''));
@@ -64,6 +67,7 @@ final class ContactController
             return;
         }
 
+        // Header-Injection in Name und E-Mail verhindern.
         $safeName = str_replace(["\r", "\n"], '', $name);
         $safeEmail = str_replace(["\r", "\n"], '', $email);
 
@@ -92,6 +96,7 @@ final class ContactController
             return;
         }
 
+        // Erfolgreiche Abgabe per Flash-Meldung bestaetigen.
         $_SESSION['flash']['success'] = 'Danke! Deine Nachricht wurde erfolgreich gesendet.';
         unset($_SESSION['form_old'], $_SESSION['form_errors']);
 

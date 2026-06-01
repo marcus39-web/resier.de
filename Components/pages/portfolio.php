@@ -1,10 +1,12 @@
 <?php
+// Vollansicht aller Projekte aus den Projektdaten.
 /** @var array<int, array{title: string, summary: string, tech: array<int, string>, challenge: string, solution: string, learning: string, url: string}> $projects */
 ?>
 <section class="section container">
     <p class="eyebrow">Portfolio</p>
     <h1>Praxisprojekte fuer Unterricht und Anwendungsentwicklung</h1>
     <div class="grid cards">
+        <!-- Jedes Projekt wird als eigenstaendige Karte gerendert -->
         <?php foreach ($projects as $project): ?>
             <article class="card">
                 <h2><?= e($project['title']) ?></h2>

@@ -1,8 +1,10 @@
 <?php
+// Startseite mit Profil, Nachweisen, Projektfokus und Kontaktaufruf.
 /** @var array<string, mixed> $profile */
 /** @var array<int, array{title: string, issuer: string, credentialId: string, issuedAt: string, proofUrls: array<int, string>, skills: array<int, string>}> $certificates */
 /** @var array<int, array{title: string, summary: string, tech: array<int, string>, challenge: string, solution: string, learning: string, url: string}> $projects */
 
+// Zertifikate fuer die Timeline vorbereiten und die Original-ID fuer Detailaufrufe erhalten.
 $timeline = array_map(
     static fn (array $certificate, int $index): array => $certificate + ['proofId' => $index],
     $certificates,
@@ -10,6 +12,7 @@ $timeline = array_map(
 );
 usort($timeline, static fn (array $a, array $b): int => strcmp($a['issuedAt'], $b['issuedAt']));
 
+// Moegliche Speicherorte fuer das Profilbild, damit alte und neue Pfade funktionieren.
 $profileImageCandidates = [
     '/Components/images/profilbild.jpg',
     '/Components/images/profilbild.jpeg',
@@ -22,6 +25,14 @@ $profileImageCandidates = [
     '/public/assets/images/profile.heic',
 ];
 
+// Nur die ersten zwei Projekte als kompakter Fokus auf der Startseite.
+$projectFocusItems = array_map(
+    static fn (array $project, int $index): array => $project + ['projectId' => $index],
+    array_slice($projects, 0, 2),
+    array_keys(array_slice($projects, 0, 2))
+);
+
+// Erstes vorhandenes Profilbild ermitteln.
 $profileImagePath = null;
 foreach ($profileImageCandidates as $candidate) {
     if (is_file(BASE_PATH . $candidate)) {
@@ -30,6 +41,7 @@ foreach ($profileImageCandidates as $candidate) {
     }
 }
 ?>
+<!-- Hero-Bereich mit Kurzprofil und Kontakt-CTA -->
 <section class="section container intro">
     <div class="intro-grid">
         <div>
@@ -55,6 +67,7 @@ foreach ($profileImageCandidates as $candidate) {
     </div>
 </section>
 
+<!-- Inhaltliche Hauptbereiche der Startseite in Bento-Anordnung -->
 <section class="section container bento-grid">
     <article class="card bento about">
         <h2>Über mich</h2>
@@ -118,6 +131,7 @@ foreach ($profileImageCandidates as $candidate) {
 
     <article id="zertifikate-timeline" class="card bento timeline-block">
         <h2>Zertifikate Timeline</h2>
+        <!-- Zertifikate bleiben nach Datum sortiert und verlinken in die Nachweisansicht -->
         <div class="timeline">
             <?php foreach ($timeline as $certificate): ?>
                 <div class="timeline-item">
@@ -137,9 +151,10 @@ foreach ($profileImageCandidates as $candidate) {
         </div>
     </article>
 
-    <article class="card bento project-block">
+    <article id="projekt-fokus" class="card bento project-block">
         <h2>Projekt Fokus</h2>
-        <?php foreach (array_slice($projects, 0, 2) as $project): ?>
+        <!-- Kompakte Projektteaser mit Ruecksprungfaehigkeit auf die Startseite -->
+        <?php foreach ($projectFocusItems as $project): ?>
             <div class="project-mini">
                 <h3><?= e($project['title']) ?></h3>
                 <p><?= e($project['summary']) ?></p>
@@ -149,6 +164,7 @@ foreach ($profileImageCandidates as $candidate) {
                     <?php endforeach; ?>
                 </ul>
                 <p><strong>Lerngewinn:</strong> <?= e($project['learning']) ?></p>
+                <a class="inline-link" href="/projekt?id=<?= (int) ($project['projectId'] ?? 0) ?>">Projekt öffnen</a>
             </div>
         <?php endforeach; ?>
         <a class="inline-link" href="/portfolio">Alle Projekte ansehen</a>
@@ -174,6 +190,7 @@ foreach ($profileImageCandidates as $candidate) {
         </div>
         <?php if (!empty($profile['cvProofUrls'])): ?>
             <div class="cv-links">
+                <!-- Lebenslauf wird ueber eine eigene Blaetteransicht geoeffnet -->
                 <p class="subtle"><strong>Lebenslauf als Nachweis:</strong></p>
                 <a href="/lebenslauf">Lebenslauf öffnen</a>
             </div>

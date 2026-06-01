@@ -1,4 +1,5 @@
 <?php
+// Blaetteransicht fuer den mehrseitigen Lebenslauf.
 /** @var string|null $pageImage */
 /** @var int $currentPage */
 /** @var int $pageCount */
@@ -16,10 +17,12 @@
 
     <?php if ($pageImage !== null): ?>
         <article class="card cv-card">
+            <!-- Aktuelle Lebenslaufseite gross anzeigen -->
             <a class="cv-image-link" href="<?= e($pageImage) ?>" target="_blank" rel="noopener noreferrer">
                 <img class="cv-image" src="<?= e($pageImage) ?>" alt="Lebenslauf Seite <?= e((string) $currentPage) ?>">
             </a>
 
+            <!-- Navigation zwischen den Lebenslaufseiten -->
             <div class="cv-navigation">
                 <?php if ($currentPage > 1): ?>
                     <a class="cta cv-nav-link" href="/lebenslauf?seite=<?= $currentPage - 1 ?>">Zurück</a>

@@ -1,3 +1,4 @@
+/* Farbvariablen und Grundthema der Seite */
 :root {
     --bg: #07111b;
     --bg-soft: #0e1d2d;
@@ -18,6 +19,7 @@
     box-sizing: border-box;
 }
 
+/* Globales Seitenlayout */
 body {
     margin: 0;
     font-family: "Space Grotesk", "Segoe UI", sans-serif;
@@ -42,6 +44,7 @@ h3,
     margin: 0 auto;
 }
 
+/* Header und Navigation */
 .site-header {
     position: sticky;
     top: 0;
@@ -81,6 +84,7 @@ h3,
     color: var(--accent);
 }
 
+/* Hero-Bereich */
 .intro {
     padding: 4rem 0 1rem;
     animation: fade-up 420ms ease;
@@ -143,6 +147,7 @@ h3,
     font-size: 0.86rem;
 }
 
+/* Buttons und CTA-Links */
 .cta,
 button {
     display: inline-block;
@@ -172,6 +177,7 @@ button:hover {
     padding: 1.5rem 0 3rem;
 }
 
+/* Karten- und Rasterlayout */
 .grid {
     display: grid;
     gap: 1rem;
@@ -199,6 +205,7 @@ button:hover {
     font-weight: 700;
 }
 
+/* Bento-Struktur der Startseite */
 .bento-grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -246,6 +253,7 @@ button:hover {
     margin-bottom: 0.35rem;
 }
 
+/* Tags, Timeline und Projektauszug */
 .subtle {
     color: var(--muted);
     margin-top: 0.8rem;
@@ -329,6 +337,7 @@ button:hover {
     color: #7cebdd;
 }
 
+/* Nachweis- und Detailseiten fuer CV, Zertifikate und Projekte */
 .cv-links {
     display: flex;
     flex-wrap: wrap;
@@ -386,6 +395,7 @@ button:hover {
     min-width: 110px;
 }
 
+/* Kontaktformular und Hinweistexte */
 .contact-wrap {
     display: grid;
     gap: 1.2rem;
@@ -449,6 +459,7 @@ textarea:focus {
     border-color: #f2c2c2;
 }
 
+/* Footer und Basisanimation */
 .site-footer {
     border-top: 1px solid var(--line);
     padding: 1rem 0 2rem;
@@ -467,6 +478,7 @@ textarea:focus {
     }
 }
 
+/* Breiteres Layout ab Desktop-Breite */
 @media (min-width: 860px) {
     .intro-grid {
         grid-template-columns: 1.2fr 0.8fr;

@@ -1,4 +1,5 @@
 <?php
+// Detailansicht fuer Zertifikate und Zeugnisse mit Ruecksprung zur Timeline.
 /** @var string $certificateTitle */
 /** @var int $certificateId */
 /** @var string|null $pageImage */
@@ -19,10 +20,12 @@
 
     <?php if ($pageImage !== null): ?>
         <article class="card cv-card">
+            <!-- Aktuelle Nachweisseite gross anzeigen -->
             <a class="cv-image-link" href="<?= e($pageImage) ?>" target="_blank" rel="noopener noreferrer">
                 <img class="cv-image" src="<?= e($pageImage) ?>" alt="<?= e($certificateTitle) ?> Seite <?= e((string) $currentPage) ?>">
             </a>
 
+            <!-- Navigation fuer mehrseitige Zertifikatsnachweise -->
             <div class="cv-navigation">
                 <?php if ($currentPage > 1): ?>
                     <a class="cta cv-nav-link" href="/zertifikat?id=<?= $certificateId ?>&seite=<?= $currentPage - 1 ?>">Zurück</a>

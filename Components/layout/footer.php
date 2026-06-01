@@ -1,3 +1,4 @@
+<!-- Gemeinsamer Footer mit kurzem Technik-Hinweis -->
 </main>
 <footer class="site-footer">
     <div class="container">

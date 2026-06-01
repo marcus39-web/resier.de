@@ -1,4 +1,5 @@
 <?php
+// Gemeinsamer Seitenkopf mit Meta-Tags, Fonts und Hauptnavigation.
 /** @var string $title */
 ?>
 <!doctype html>
@@ -15,6 +16,7 @@
 </head>
 <body>
 <header class="site-header">
+    <!-- Globale Hauptnavigation fuer alle Seiten -->
     <nav class="nav container">
         <a class="brand" href="/">PHP Karriereprofil</a>
         <div class="nav-links">

@@ -7,8 +7,10 @@ namespace App\Controllers;
 use App\Data\PortfolioData;
 use App\View;
 
+// Liefert alle nicht-formularbasierten Seiten der Website aus.
 final class PageController
 {
+    // Startseite mit Profil, Zertifikaten und Projektfokus.
     public function home(): void
     {
         $certificates = PortfolioData::certificates();
@@ -23,6 +25,7 @@ final class PageController
         ]);
     }
 
+    // Vollstaendige Portfolio-Uebersicht aller Projekte.
     public function portfolio(): void
     {
         $projects = PortfolioData::projects();
@@ -33,6 +36,29 @@ final class PageController
         ]);
     }
 
+    // Detailansicht fuer ein einzelnes Projekt aus dem Projektfokus.
+    public function project(): void
+    {
+        $projects = PortfolioData::projects();
+        $requestedProject = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $projectIndex = $requestedProject === false || $requestedProject === null ? 0 : $requestedProject;
+
+        if (!isset($projects[$projectIndex])) {
+            http_response_code(404);
+            View::render('pages/project', [
+                'title' => 'Projekt',
+                'project' => null,
+            ]);
+            return;
+        }
+
+        View::render('pages/project', [
+            'title' => $projects[$projectIndex]['title'],
+            'project' => $projects[$projectIndex],
+        ]);
+    }
+
+    // Blaetteransicht fuer den mehrseitigen Lebenslauf.
     public function cv(): void
     {
         $profile = require DATA_PATH . '/profile.php';
@@ -62,6 +88,7 @@ final class PageController
         ]);
     }
 
+    // Blaetteransicht fuer Zertifikats- und Zeugnisnachweise.
     public function certificate(): void
     {
         $certificates = PortfolioData::certificates();
@@ -81,6 +108,7 @@ final class PageController
         }
 
         $certificate = $certificates[$certificateIndex];
+        // Mehrseitige Nachweise werden als Seite 1..n abgebildet.
         $pages = array_values(array_filter($certificate['proofUrls'], 'is_string'));
         $pageCount = count($pages);
 

@@ -1,8 +1,11 @@
 <?php
 
+// Zentrale Profildaten fuer Startseite, Kontaktseite und Lebenslauf-Ansicht.
+
 declare(strict_types=1);
 
 return [
+    // Stammdaten und Kurzprofil.
     'name' => 'Marcus Klaus-Dieter Reiser',
     'headline' => 'Berufspädagogischer Hintergrund | Betriebswirt (HWK) | IT-Spezialist',
     'location' => 'Lerchenweg 16, 99428 Weimar/Legefeld',
@@ -14,18 +17,21 @@ return [
     'targetRole' => 'Dozent / Lernprozessbegleiter in Festanstellung',
     'targetReference' => 'Initiativbewerbung',
     'targetRegion' => 'Bayern und Thüringen',
+    // Kernaussagen fuer den Motivationsblock.
     'motivation' => [
         'Ich verbinde pädagogische Kompetenz mit wirtschaftlicher Praxis und aktueller IT-Erfahrung und bereite Lernende handlungsorientiert auf IHK- und HWK-Prüfungen vor.',
         'Meine Weiterbildung in der Anwendungsinformatik sowie WPI-Zertifizierungen in JavaScript/TypeScript und PHP/Laravel ergänzen mein Lehrprofil um aktuelle Tech-Inhalte.',
         'Mein C#-OOP-Projekt mit KI-Bezug auf GitHub zeigt, wie ich komplexe Inhalte praxisnah und nachvollziehbar in Lernprojekte überführe.',
         'Ich suche eine langfristige Perspektive in der Fachkräfteausbildung, um Lernende fachlich und methodisch sicher zum Abschluss zu begleiten.',
     ],
+    // Link zum hervorgehobenen Projekt und Lebenslaufnachweise.
     'projectFocusUrl' => 'https://github.com/marcus39-web/GHI-CSharp-Roboter-OOP.git',
     'cvProofUrls' => [
         '/Components/images/lebenlslauf_seite1.jpg',
         '/Components/images/lebenlslauf_seite2.jpg',
         '/Components/images/lebenlslauf_seite3.jpg',
     ],
+    // Beruflicher Werdegang fuer Timeline und CV-Kontext.
     'career' => [
         [
             'period' => '08/2025 - 03/2026',
@@ -76,6 +82,7 @@ return [
             ],
         ],
     ],
+    // Fachliche Kompetenzgruppen fuer die Startseite.
     'competencies' => [
         [
             'category' => 'Betriebssysteme',
@@ -102,6 +109,7 @@ return [
             'items' => ['Betriebliche Prozesse', 'Personal', 'Vertrieb', 'Prüfungsvorbereitung', 'Handlungsorientierter Unterricht'],
         ],
     ],
+    // Kompakte Abschluss- und Weiterbildungsuebersicht.
     'qualifications' => [
         'Berufspädagogischer Hintergrund und Ausbilder-Eignung (AEVO).',
         'Betriebswirt des Handwerks (HWK).',
