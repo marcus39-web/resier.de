@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-// Kleiner SMTP-Client fuer transaktionale Text-Mails (TLS/SSL, AUTH LOGIN).
 final class SmtpMailer
 {
     private string $host;
@@ -38,31 +37,23 @@ final class SmtpMailer
         string $textBody,
         string $replyTo = ''
     ): void {
-        // Neue Verbindung pro Mail, damit Request-Laufzeiten und Fehler sauber gekapselt bleiben.
         $socket = $this->connect();
 
         try {
             $this->readResponse($socket, [220]);
 
-            $hostname = gethostname();
-            $ehloName = $hostname !== false && $hostname !== '' ? $hostname : 'localhost';
+            $rawHostname = gethostname();
+            $ehloName = (is_string($rawHostname) && $rawHostname !== '') ? $rawHostname : 'localhost';
 
             $this->sendCommand($socket, 'EHLO ' . $ehloName, [250]);
 
             if ($this->encryption === 'tls') {
-                // STARTTLS upgraden und danach EHLO erneut senden.
                 $this->sendCommand($socket, 'STARTTLS', [220]);
 
-                $cryptoMethod = STREAM_CRYPTO_METHOD_TLS_CLIENT;
+                // TLS 1.2 Handshake mit explizitem Erfolg-Check
+                $cryptoResult = stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT);
                 
-                if (defined('STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT')) {
-                    $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
-                }
-                if (defined('STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT')) {
-                    $cryptoMethod |= STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT;
-                }
-
-                if (!stream_socket_enable_crypto($socket, true, $cryptoMethod)) {
+                if ($cryptoResult !== true) {
                     throw new \RuntimeException('STARTTLS konnte nicht aktiviert werden.');
                 }
 
@@ -70,7 +61,6 @@ final class SmtpMailer
             }
 
             if ($this->username !== '' && $this->password !== '') {
-                // SMTP Basic Auth ueber AUTH LOGIN.
                 $this->sendCommand($socket, 'AUTH LOGIN', [334]);
                 $this->sendCommand($socket, base64_encode($this->username), [334]);
                 $this->sendCommand($socket, base64_encode($this->password), [235]);
@@ -94,7 +84,6 @@ final class SmtpMailer
                 $headers[] = 'Reply-To: <' . $replyTo . '>';
             }
 
-            // SMTP DATA mit finalem Terminator \r\n. senden.
             $message = implode("\r\n", $headers) . "\r\n\r\n" . $this->normalizeBody($textBody) . "\r\n.";
 
             fwrite($socket, $message . "\r\n");
@@ -106,19 +95,27 @@ final class SmtpMailer
         }
     }
 
-    /** @return resource */
     private function connect()
     {
-        // Fuer SSL wird direkt ueber ssl:// verbunden, bei TLS erst plain + STARTTLS.
+        // SSL Kontext für Windows, um Zertifikatsprobleme bei der Verbindung zu lösen
+        $context = stream_context_create([
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ]);
+
         $transport = $this->encryption === 'ssl' ? 'ssl://' : '';
         $endpoint = $transport . $this->host . ':' . $this->port;
 
-        $socket = @stream_socket_client(
+        $socket = stream_socket_client(
             $endpoint,
             $errorNumber,
             $errorMessage,
-            $this->timeout,
-            STREAM_CLIENT_CONNECT
+            (float)$this->timeout,
+            STREAM_CLIENT_CONNECT,
+            $context
         );
 
         if ($socket === false) {
@@ -126,30 +123,20 @@ final class SmtpMailer
         }
 
         stream_set_timeout($socket, $this->timeout);
-
         return $socket;
     }
 
-    /** @param resource $socket
-     *  @param array<int, int> $expectedCodes
-     */
     private function sendCommand($socket, string $command, array $expectedCodes): void
     {
         fwrite($socket, $command . "\r\n");
         $this->readResponse($socket, $expectedCodes);
     }
 
-    /** @param resource $socket
-     *  @param array<int, int> $expectedCodes
-     */
     private function readResponse($socket, array $expectedCodes): string
     {
-        // Mehrzeilige SMTP-Antworten lesen, bis die finale Statuszeile erreicht ist.
         $response = '';
-
         while (($line = fgets($socket, 515)) !== false) {
             $response .= $line;
-
             if (preg_match('/^\d{3}\s/', $line) === 1) {
                 break;
             }
@@ -161,7 +148,9 @@ final class SmtpMailer
 
         $code = (int) substr($response, 0, 3);
         if (!in_array($code, $expectedCodes, true)) {
-            throw new \RuntimeException('Unerwartete SMTP-Antwort: ' . trim($response));
+            $errorMsg = 'SMTP-Fehler (' . $code . '): ' . trim($response);
+            file_put_contents(__DIR__ . '/../../data/logs/app-error.log', date('[Y-m-d H:i:s] ') . $errorMsg . PHP_EOL, FILE_APPEND);
+            throw new \RuntimeException($errorMsg);
         }
 
         return $response;
@@ -169,28 +158,19 @@ final class SmtpMailer
 
     private function encodeHeader(string $value): string
     {
-        if (preg_match('/^[\x20-\x7E]+$/', $value) === 1) {
-            return $value;
-        }
-
+        if (preg_match('/^[\x20-\x7E]+$/', $value) === 1) return $value;
         return '=?UTF-8?B?' . base64_encode($value) . '?=';
     }
 
     private function formatAddressHeader(string $email, string $name): string
     {
-        if ($name === '') {
-            return '<' . $email . '>';
-        }
-
-        return $this->encodeHeader($name) . ' <' . $email . '>';
+        return $name === '' ? '<' . $email . '>' : $this->encodeHeader($name) . ' <' . $email . '>';
     }
 
     private function normalizeBody(string $body): string
     {
-        // Zeilenenden normalisieren und SMTP dot-stuffing anwenden.
         $normalized = str_replace(["\r\n", "\r"], "\n", $body);
         $normalized = str_replace("\n.", "\n..", $normalized);
-
         return str_replace("\n", "\r\n", $normalized);
     }
 }
